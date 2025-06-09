@@ -1,0 +1,29 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+  char* input = NULL;
+  size_t len = 0;
+  char *arr;
+  int i = 0;
+  while(1) {
+    printf("Enter input: ");
+    ssize_t line = getline(&input, &len, stdin);
+    arr[i] = *input;
+    if (*input == "print") {
+      if (i > 3) {
+        for (int k = i-4; k < i; k++) {
+          printf("%s\n", arr[k]);
+        }
+      } else {
+        for (int k = 0; k < i; k++) {
+          printf("%s\n", arr[k]);
+        }
+      }
+    }
+  }
+}
+
+
