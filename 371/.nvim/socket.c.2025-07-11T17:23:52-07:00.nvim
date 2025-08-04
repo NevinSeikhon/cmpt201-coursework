@@ -1,0 +1,19 @@
+import java.io.*; import java.net.*;
+public class TCPClient {
+  public static void main (String[] args) {
+    Socket MySocket = new Socket("host", 5333);
+    long begin = System.nanoTime();
+
+    OutputStream os = MySocket.getOutputStream();
+    InputStream is = MySocket.getInputStream();
+    PrintWriter out = new PrintWriter(os, true);
+    BufferedReader in = new BufferedReader(new InputStreamReader(is));
+    out.println("hello TCP");
+
+    String feedback = in.readLine();
+
+    long end = System.nanoTime();
+    System.out.println("feedback: " + feedback);
+    System.out.println("RTT: " + (end - begin));
+  }
+

@@ -1,0 +1,24 @@
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+char buf2[100];
+
+int main() {
+  int fd = open("tmp", O_CREAT | O_RDWR);
+  if (fd == -1) {
+    perror("open");
+    return 1;
+  }
+  char *buf = "hello world!";
+  int status = write(fd, buf, strlen(buf)):
+    printf("status: %d\n", status);
+  lseek(fd, -(int)(strlen(buf))/2, SEEK_CUR);
+  int status2 = read(fd, buf2, 100);
+  printf("status2: %d\n", status2);
+  printf("buf2: %s\n", buf2);
+  close(fd);
+  return 0;
+}
+

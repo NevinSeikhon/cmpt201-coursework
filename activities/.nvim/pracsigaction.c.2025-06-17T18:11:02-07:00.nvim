@@ -1,0 +1,23 @@
+
+
+
+char *message = "CTRL-C pressed";
+sig_hander() {
+  write(STDOUT_FILENO, message, strlen(message));
+}
+
+int main() {
+  struct sigaction act;
+  act.sa_handler = sig_hander();
+  act.sa_flags = 0;
+  act.sa_mask = sigemptyset(&act)
+  
+  int ret = sigaction(SIGINT, act, NULL);
+  if (ret == -1) {
+    perror("sigaction() failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  while (true) {
+    sleep(1);
+  }

@@ -1,0 +1,30 @@
+#define _GNU_SOURCE
+#include <pthread.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void *func(void *str) {
+  char *s = (char*)str; // need to do the type casting
+  printf("%s\n", s);
+  printf("child tid = %d\n", gettid());
+  return (void*)(strlen(s));
+}
+char *hello = "Hello world.";
+
+int main() {
+  pthread_t child_id;
+  int ret = pthread_create(&child_id, NULL, func, (void *)hello); // 2nd field is usually NULL
+
+  if (ret) {
+    printf("failed thread creation.\n");
+    exit(1);
+  }
+
+  void *ret_value;
+  int rett = pthread_join(child_id, &ret_value);
+  printf("child ret value = %d\n", (int)ret_value);
+
+  return 0;
+}

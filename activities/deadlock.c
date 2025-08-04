@@ -1,0 +1,39 @@
+#include <pthread.h>
+#include <stdio.h>
+pthread_mutex_t lockA = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lockB = PTHREAD_MUTEX_INITIALIZER;
+
+void *func(void *arg) {
+  printf("Thread #%d waiting ... \n", (int)arg);
+  if ((int)arg == 0) {
+    pthread_mutex_lock(&lockA);
+    pthread_mutex_lock(&lockB);
+  } else {
+    pthread_mutex_lock(&lockB);
+    pthread_mutex_lock(&lockA);
+  }
+
+  printf("Thread #%d: Running...\n", (int)arg);
+  if ((int)arg == 0) {
+    pthread_mutex_unlock(&lockB);
+    pthread_mutex_unlock(&lockA);
+  } else {
+    pthread_mutex_unlock(&lockA);
+    pthread_mutex_unlock(&lockB);
+  }
+
+  printf("Thread #%d: done.\n", (int)arg);
+  return 0;
+}
+
+// 2nd thread causes deadlock
+// void *func2(void *arg) {
+
+int main() {
+  pthread_t t0, t1;
+  pthread_create(&t0, NULL, func, (void *)0);
+  pthread_create(&t1, NULL, func, (void *)1);
+  pthread_join(t0, NULL);
+  pthread_join(t1, NULL);
+  return 0;
+}
